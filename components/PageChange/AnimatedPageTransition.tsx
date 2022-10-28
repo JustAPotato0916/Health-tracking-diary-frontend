@@ -15,12 +15,13 @@ function AnimatedPageTransition({ children }: { children: React.ReactNode }) {
       <motion.div
         transition={spring}
         key={router.pathname}
-        initial={{ x: 0, opacity: 0 }}
+        initial={{ opacity: 0 }}
         animate={{
-          x: 0,
           opacity: 1,
         }}
-        exit={{ x: 0, opacity: 0 }}
+        exit={{
+          opacity: 0,
+        }}
       >
         {children}
       </motion.div>

@@ -1,0 +1,12 @@
+{
+  "title": "健康追蹤日記",
+  "welcomeMessage": "歡迎使用健康追蹤日記！",
+  "email": "Email 信箱",
+  "emailError": "請輸入正確的 Email 格式!",
+  "password": "Password 密碼",
+  "passwordError": "密碼不可為空，長度介於 6 至 16 個字之間!",
+  "login": "Login 登入",
+  "newUser": "還沒有帳號嗎?",
+  "createAnAccout": "註冊帳號",
+  "anotherFunction": "其他登入方式"
+}
