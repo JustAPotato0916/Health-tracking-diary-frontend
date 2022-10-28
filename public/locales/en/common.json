@@ -5,8 +5,13 @@
   "emailError": "Please enter a valid email.",
   "password": "Password",
   "passwordError": "Your password must contain between 6 and 16 characters.",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordError": "Two input password must be consistent",
   "login": "Login",
   "newUser": "Don’t have an account?",
   "createAnAccout": "Create an account",
+  "signup": "Sign up",
+  "oldUser": "Already have an account?",
+  "turnLoginPage": "Click me to login",
   "anotherFunction": "Another way"
 }

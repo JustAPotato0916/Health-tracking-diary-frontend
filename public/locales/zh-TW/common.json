@@ -5,8 +5,13 @@
   "emailError": "請輸入正確的 Email 格式!",
   "password": "Password 密碼",
   "passwordError": "密碼不可為空，長度介於 6 至 16 個字之間!",
+  "confirmPassword": "Confirm Password 確認密碼",
+  "confirmPasswordError": "密碼與二次密碼不相同!",
   "login": "Login 登入",
   "newUser": "還沒有帳號嗎?",
   "createAnAccout": "註冊帳號",
+  "signup": "Sign up 註冊",
+  "oldUser": "已經有帳號了嗎?",
+  "turnLoginPage": "點擊此處登入",
   "anotherFunction": "其他登入方式"
 }
