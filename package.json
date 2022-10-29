@@ -6,6 +6,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.11",
     "firebase": "^9.13.0",
     "framer-motion": "^7.6.2",
     "i18next": "^22.0.3",

@@ -10,4 +10,13 @@
   .inputLabel {
     @apply block mb-3 text-sm font-medium dark:text-white;
   }
+
+  /* MUI Menu */
+  .menu {
+    @apply lg:hidden;
+  }
+
+  .menu .MuiPaper-root {
+    @apply !rounded-lg !border !border-[gray] !bg-[#2d2e30] !text-[#3c4043] !w-64;
+  }
 }
