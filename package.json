@@ -9,6 +9,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.11",
+    "@tanstack/react-query": "^4.13.0",
     "firebase": "^9.13.0",
     "framer-motion": "^7.6.2",
     "i18next": "^22.0.3",
@@ -20,6 +21,7 @@
     "react-i18next": "^12.0.0",
     "react-icons": "^4.6.0",
     "react-particles": "^2.3.3",
+    "recharts": "^2.1.16",
     "tsparticles": "^2.3.4"
   },
   "devDependencies": {

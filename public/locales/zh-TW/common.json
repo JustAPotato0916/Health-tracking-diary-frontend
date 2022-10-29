@@ -13,5 +13,11 @@
   "signup": "Sign up 註冊",
   "oldUser": "已經有帳號了嗎?",
   "turnLoginPage": "點擊此處登入",
-  "anotherFunction": "其他登入方式"
+  "anotherFunction": "其他登入方式",
+  "temperature": "氣溫",
+  "probabilityOfPrecipitation": "降雨機率",
+  "humidity": "濕度",
+  "windSpeed": "風速",
+  "windSpeedUnit": "公里/時",
+  "city": "台中市"
 }

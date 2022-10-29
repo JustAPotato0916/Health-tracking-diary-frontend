@@ -13,5 +13,11 @@
   "signup": "Sign up",
   "oldUser": "Already have an account?",
   "turnLoginPage": "Click me to login",
-  "anotherFunction": "Another way"
+  "anotherFunction": "Another way",
+  "probabilityOfPrecipitation": "Probability of precipitation",
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "windSpeed": "Wind speed",
+  "windSpeedUnit": "km/hr",
+  "city": "Taichung City"
 }
