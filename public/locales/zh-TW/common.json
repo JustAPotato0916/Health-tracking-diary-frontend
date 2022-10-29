@@ -19,5 +19,9 @@
   "humidity": "濕度",
   "windSpeed": "風速",
   "windSpeedUnit": "公里/時",
-  "city": "台中市"
+  "city": "台中市",
+  "target": "目標",
+  "diary": "日記",
+  "googleFit": "Google Fit",
+  "user": "會員資料"
 }

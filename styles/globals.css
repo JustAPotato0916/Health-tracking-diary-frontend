@@ -19,4 +19,9 @@
   .menu .MuiPaper-root {
     @apply !rounded-lg !border !border-[gray] !bg-[#2d2e30] !text-[#3c4043] !w-64;
   }
+
+  /* Homepage */
+  .linkCard {
+    @apply w-full h-full flex flex-col justify-center rounded-xl border-2 hover:border-purple-400 hover:text-purple-400;
+  }
 }

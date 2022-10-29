@@ -19,5 +19,9 @@
   "humidity": "Humidity",
   "windSpeed": "Wind speed",
   "windSpeedUnit": "km/hr",
-  "city": "Taichung City"
+  "city": "Taichung City",
+  "target": "Target",
+  "diary": "Diary",
+  "googleFit": "Google Fit",
+  "user": "User"
 }
