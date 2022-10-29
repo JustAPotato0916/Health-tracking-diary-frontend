@@ -14,25 +14,25 @@ function ModeToggle({
     router.push({ pathname, query }, asPath, { locale: newLocale });
   };
 
-  const changeTo = router.locale === "zh-TW" ? "en" : "zh-TW";
-
   return (
     <div className="absolute top-0 right-0 flex flex-row items-center space-x-2 select-none z-20 dark:text-white">
       <div className="flex flex-row space-x-1 font-semibold text-lg">
         <span
           className={`${
-            router.locale == "zh-TW" && "text-slate-400 hover:text-slate-300"
-          }`}
-          onClick={() => onToggleLanguageClick(changeTo)}
+            router.locale == "zh-TW" &&
+            "text-slate-400 hover:text-slate-300 pointer-events-auto"
+          } pointer-events-none`}
+          onClick={() => onToggleLanguageClick("en")}
         >
           EN
         </span>
         <span>/</span>
         <span
           className={`${
-            router.locale == "en" && "text-slate-400 hover:text-slate-200"
-          }`}
-          onClick={() => onToggleLanguageClick(changeTo)}
+            router.locale == "en" &&
+            "text-slate-400 hover:text-slate-200 pointer-events-auto"
+          } pointer-events-none`}
+          onClick={() => onToggleLanguageClick("zh-TW")}
         >
           TW
         </span>

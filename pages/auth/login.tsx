@@ -6,7 +6,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import ParticlesBackground from "../../components/general/ParticlesBackground";
 import useAuth from "../../src/hooks/useAuth";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 interface Props {}
