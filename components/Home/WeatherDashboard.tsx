@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { weekdays } from "../../src/lib/weekdays";
-import weatherService from "../../src/service/weatherService";
+import WeatherService from "../../src/service/WeatherService";
+import Loader from "../general/Loader";
 import WeatherChart from "./WeatherChart";
 import WeatherIcon from "./WeatherIcon";
 
@@ -41,9 +42,14 @@ function WeatherDashboard({
     isLoading,
     data: weatherElements,
     error,
-  } = useQuery(["weather"], weatherService.getWeather, { staleTime: 3600000 });
+  } = useQuery(["weather"], WeatherService.getWeather, { staleTime: 3600000 });
 
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <div className="flex flex-col rounded-xl justify-center items-center border-2 lg:h-2/3 lg:px-2">
+        <Loader />
+      </div>
+    );
 
   if (isError)
     return (
@@ -184,7 +190,7 @@ function WeatherDashboard({
                 />
               </div>
               <span className="flex flex-row justify-center">
-                {data.temperature}
+                {data.temperature}°C
               </span>
             </div>
           );

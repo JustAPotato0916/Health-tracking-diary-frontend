@@ -101,7 +101,6 @@ function WeatherChart({
             <LineChart width={500} height={300} data={temperatureArrayData}>
               <CartesianGrid strokeDasharray="3 3" />
               <YAxis />
-              <Tooltip />
               <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
             </LineChart>
           </ResponsiveContainer>
@@ -115,7 +114,6 @@ function WeatherChart({
             >
               <CartesianGrid strokeDasharray="3 3" />
               <YAxis />
-              <Tooltip />
               <Line
                 type="monotone"
                 dataKey="probabilityOfPrecipitation"
