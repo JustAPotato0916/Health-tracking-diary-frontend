@@ -4,10 +4,8 @@ import { WeatherElement } from "../../typing";
 import {
   LineChart,
   Line,
-  XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
 } from "recharts";
 import { useRouter } from "next/router";

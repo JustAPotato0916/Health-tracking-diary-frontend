@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { weekdays } from "../../src/lib/weekdays";
 import WeatherService from "../../src/service/WeatherService";
 import Loader from "../general/Loader";
@@ -108,7 +108,13 @@ function WeatherDashboard({
     }
   });
 
-  console.log({ isError, isSuccess, isLoading, weatherElements, error });
+  useEffect(() => {
+    if (weekdayData[arrayIndex].isDay) {
+      setIsDay(true);
+    } else {
+      setIsDay(false);
+    }
+  }, [arrayIndex]);
 
   return (
     <div className="flex flex-col rounded-xl border-2 lg:h-2/3 lg:px-2">
