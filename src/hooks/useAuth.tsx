@@ -1,7 +1,9 @@
+import { setCookie } from "cookies-next";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  onIdTokenChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -10,6 +12,7 @@ import {
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { auth } from "../config/firebase.config";
+import UserDataService from "../service/UserDataService";
 
 interface IAuth {
   user: User | null;
@@ -45,9 +48,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
+        setCookie("authToken", await user.getIdToken(true));
         setIsLoading(false);
       } else {
         setUser(null);
+        setCookie("authToken", null);
         setIsLoading(true);
         if (!noAuthRequired.includes(router.pathname))
           router.push("/auth/login");
@@ -59,8 +64,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setUser(userCredential.user);
+        setCookie("authToken", await userCredential.user.getIdToken(true));
         router.push("/");
         setIsLoading(false);
       })
@@ -76,8 +82,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setUser(userCredential.user);
+        setCookie("authToken", await userCredential.user.getIdToken(true));
+        await UserDataService.createUserData({
+          uid: userCredential.user.uid,
+          name: `用戶 ${Math.floor(Math.random() * (9999 - 1000) + 1000)}`,
+          email: email,
+        });
         router.push("/");
         setIsLoading(false);
       })
@@ -97,8 +109,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     provider.addScope("https://www.googleapis.com/auth/fitness.body.read");
 
     await signInWithPopup(auth, provider)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setUser(userCredential.user);
+        setCookie("authToken", await userCredential.user.getIdToken(true));
+        await UserDataService.createUserData({
+          uid: userCredential.user.uid,
+          name: userCredential.user.displayName!,
+          email: userCredential.user.email!,
+        });
         router.push("/");
         setIsLoading(false);
       })
@@ -116,6 +134,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await signOut(auth)
       .then(() => {
         setUser(null);
+        setCookie("authToken", null);
       })
       .finally(() => {
         setErrorMessage(null);
@@ -124,7 +143,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const memoedValue = useMemo(
-    () => ({ user, signUp, signIn, loginWithGoogle, logout, errorMessage }),
+    () => ({
+      user,
+      signUp,
+      signIn,
+      loginWithGoogle,
+      logout,
+      errorMessage,
+    }),
     [user]
   );
 
