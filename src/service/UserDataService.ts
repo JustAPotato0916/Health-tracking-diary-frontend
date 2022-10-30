@@ -1,4 +1,4 @@
-import { CookieValueTypes, getCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 
 interface CreateProps {
   uid: string;

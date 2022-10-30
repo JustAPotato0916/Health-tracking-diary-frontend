@@ -1,10 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { spring } from "../../src/config/motion/spring";
+import ModeToggle from "../general/ModeToggle";
 
 function AnimatedPageTransition({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const [mode, setMode] = useState("dark");
+
+  useEffect(() => {
+    setMode(localStorage.getItem("theme") ?? "dark");
+  });
 
   return (
     <AnimatePresence
@@ -13,6 +19,7 @@ function AnimatedPageTransition({ children }: { children: React.ReactNode }) {
       onExitComplete={() => window.scrollTo(0, 0)}
     >
       <motion.div
+        className={mode}
         transition={spring}
         key={router.pathname}
         initial={{ opacity: 0 }}
@@ -23,6 +30,8 @@ function AnimatedPageTransition({ children }: { children: React.ReactNode }) {
           opacity: 0,
         }}
       >
+        <ModeToggle setMode={setMode} />
+
         {children}
       </motion.div>
     </AnimatePresence>

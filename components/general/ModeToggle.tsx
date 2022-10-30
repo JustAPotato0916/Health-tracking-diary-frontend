@@ -3,9 +3,9 @@ import React, { Dispatch, SetStateAction } from "react";
 import { BiSun, BiMoon } from "react-icons/bi";
 
 function ModeToggle({
-  setIsDarkMode,
+  setMode,
 }: {
-  setIsDarkMode: Dispatch<SetStateAction<boolean>>;
+  setMode: Dispatch<SetStateAction<string>>;
 }) {
   const router = useRouter();
 
@@ -41,14 +41,16 @@ function ModeToggle({
         <BiSun
           className="h-6 w-6 dark:hover:text-slate-200 dark:text-slate-400"
           onClick={() => {
-            setIsDarkMode(false);
+            setMode("light");
+            localStorage.setItem("theme", "light");
           }}
         />
         <span className="text-xl font-extrabold">|</span>
         <BiMoon
           className="h-6 w-6 text-slate-400 hover:text-slate-300 dark:text-white"
           onClick={() => {
-            setIsDarkMode(true);
+            setMode("dark");
+            localStorage.setItem("theme", "dark");
           }}
         />
       </div>

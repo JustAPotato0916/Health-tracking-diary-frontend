@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import AnimatedPageTransition from "../components/PageChange/AnimatedPageTransition";
 import { AuthProvider } from "../src/hooks/useAuth";
-import { useState } from "react";
 import ModeToggle from "../components/general/ModeToggle";
 import { appWithTranslation } from "next-i18next";
 
@@ -12,17 +11,11 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <AnimatedPageTransition>
-          <main className={`${isDarkMode && "dark"}`}>
-            <ModeToggle setIsDarkMode={setIsDarkMode} />
-
-            <Component {...pageProps} />
-          </main>
+          <Component {...pageProps} />
         </AnimatedPageTransition>
       </QueryClientProvider>
     </AuthProvider>
