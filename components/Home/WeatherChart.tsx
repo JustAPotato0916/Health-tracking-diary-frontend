@@ -10,7 +10,9 @@ import {
 } from "recharts";
 import { useRouter } from "next/router";
 
-interface Props {
+interface Props extends i18nContext {}
+
+interface i18nContext {
   temperatureString: string;
   probabilityOfPrecipitationString: string;
   temperature: WeatherElement;

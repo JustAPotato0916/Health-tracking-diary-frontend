@@ -15,10 +15,10 @@ interface UpdateProps {
 }
 
 class UserDataService {
-  async getUserData(): Promise<UserData> {
+  async get(): Promise<UserData> {
     const authToken = getCookie("authToken");
 
-    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-data`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -26,7 +26,7 @@ class UserDataService {
     }).then((res) => res.json());
   }
 
-  async createUserData({ uid, name, email }: CreateProps) {
+  async create({ uid, name, email }: CreateProps): Promise<Response> {
     const userData = {
       uid: uid,
       email: email,
@@ -39,7 +39,7 @@ class UserDataService {
       twitterUID: "",
     };
 
-    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-data`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -51,10 +51,10 @@ class UserDataService {
     name,
     facebookUID,
     twitterUID,
-  }: UpdateProps) {
+  }: UpdateProps): Promise<Response> {
     const authToken = getCookie("authToken");
 
-    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-data`, {
       method: "PATCH",
       body: JSON.stringify({
         profilePhotoUrl,
@@ -69,10 +69,10 @@ class UserDataService {
     });
   }
 
-  async updateCover(profileCoverUrl: string) {
+  async updateCover(profileCoverUrl: string): Promise<Response> {
     const authToken = getCookie("authToken");
 
-    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData/banner`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-data/banner`, {
       method: "PATCH",
       body: JSON.stringify({
         profileCoverUrl,

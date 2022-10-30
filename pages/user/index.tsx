@@ -30,7 +30,7 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
 
   const { isError, isSuccess, isLoading, data, error } = useQuery(
     ["userData"],
-    UserDataService.getUserData,
+    UserDataService.get,
     { staleTime: 3000 }
   );
 
@@ -94,7 +94,6 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
         duration: 8000,
         style: toastStyle,
       });
-      window.location.reload();
     });
   }
 

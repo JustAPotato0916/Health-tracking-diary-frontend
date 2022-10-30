@@ -7,7 +7,9 @@ import Loader from "../general/Loader";
 import WeatherChart from "./WeatherChart";
 import WeatherIcon from "./WeatherIcon";
 
-interface Props {
+interface Props extends i18nContext {}
+
+interface i18nContext {
   temperatureString: string;
   probabilityOfPrecipitationString: string;
   humidityString: string;

@@ -9,6 +9,14 @@ export interface UserData {
   info: string | null;
 }
 
+export interface Target {
+  id: string;
+  title: string;
+  content: string;
+  state: boolean;
+  time: string;
+}
+
 // Weather
 export interface WeatherResponse {
   success: string;

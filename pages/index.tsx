@@ -10,7 +10,7 @@ import {
   BiUser,
 } from "react-icons/bi";
 import Sidebar from "../components/general/Sidebar";
-import WeatherDashboard from "../components/Home/WeatherDashboard";
+import WeatherDashboard from "../components/home/WeatherDashboard";
 
 interface Props {}
 

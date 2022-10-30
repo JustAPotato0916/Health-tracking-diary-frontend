@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(async (userCredential) => {
         setUser(userCredential.user);
         setCookie("authToken", await userCredential.user.getIdToken(true));
-        await UserDataService.createUserData({
+        await UserDataService.create({
           uid: userCredential.user.uid,
           name: `用戶 ${Math.floor(Math.random() * (9999 - 1000) + 1000)}`,
           email: email,
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(async (userCredential) => {
         setUser(userCredential.user);
         setCookie("authToken", await userCredential.user.getIdToken(true));
-        await UserDataService.createUserData({
+        await UserDataService.create({
           uid: userCredential.user.uid,
           name: userCredential.user.displayName!,
           email: userCredential.user.email!,
