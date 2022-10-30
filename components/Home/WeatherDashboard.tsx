@@ -34,7 +34,6 @@ function WeatherDashboard({
 }: Props) {
   const router = useRouter();
   const [arrayIndex, setArrayIndex] = useState<number>(0);
-  const [isDay, setIsDay] = useState<boolean>(true);
 
   const {
     isError,
@@ -107,14 +106,6 @@ function WeatherDashboard({
       });
     }
   });
-
-  useEffect(() => {
-    if (weekdayData[arrayIndex].isDay) {
-      setIsDay(true);
-    } else {
-      setIsDay(false);
-    }
-  }, [arrayIndex]);
 
   return (
     <div className="flex flex-col rounded-xl border-2 lg:h-2/3 lg:px-2">
