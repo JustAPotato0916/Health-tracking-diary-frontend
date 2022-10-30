@@ -74,7 +74,7 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
 
       <Sidebar />
 
-      <div className="flex flex-col justify-between col-span-10 m-8 select-none dark:text-white">
+      <div className="col-span-10 p-8 select-none dark:text-white dark:bg-[#202124]">
         <div className="flex flex-col lg:flex-row h-full">
           <div className="flex flex-col lg:!w-[32rem]">
             <div className="flex flex-col border-2 !rounded-t-xl lg:!rounded-r-none">
