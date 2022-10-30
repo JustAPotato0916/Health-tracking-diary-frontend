@@ -1,3 +1,14 @@
+export interface UserData {
+  uid: string;
+  email: string;
+  name: string;
+  profilePhotoUrl: string;
+  profileCoverUrl: string;
+  facebookUID: string | null;
+  twitterUID: string | null;
+  info: string | null;
+}
+
 // Weather
 export interface WeatherResponse {
   success: string;

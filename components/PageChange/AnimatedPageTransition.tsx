@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { spring } from "../../src/config/motion/spring";
 import ModeToggle from "../general/ModeToggle";
 
@@ -33,6 +34,8 @@ function AnimatedPageTransition({ children }: { children: React.ReactNode }) {
         <ModeToggle setMode={setMode} />
 
         {children}
+
+        <Toaster position="bottom-center" />
       </motion.div>
     </AnimatePresence>
   );

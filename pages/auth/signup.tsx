@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import ButtonLoader from "../../components/general/ButtonLoader";
 import ParticlesBackground from "../../components/general/ParticlesBackground";
 import useAuth from "../../src/hooks/useAuth";
 
@@ -18,7 +19,7 @@ interface Inputs {
 interface Props {}
 
 function signup(_props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { signUp, errorMessage, loginWithGoogle } = useAuth();
+  const { isLoading, signUp, errorMessage, loginWithGoogle } = useAuth();
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const { t } = useTranslation("common");
 
@@ -124,7 +125,7 @@ function signup(_props: InferGetStaticPropsType<typeof getStaticProps>) {
               type="submit"
               className="text-white bg-purple-500 hover:bg-purple-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
             >
-              {t("signup")}
+              {isLoading ? <ButtonLoader /> : t("signup")}
             </button>
           </form>
 

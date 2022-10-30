@@ -1,8 +1,20 @@
 {
   "imageError": "Cannot load image, please try to reload page.",
   "uploadCover": "Upload Banner",
-  "confirm": "Confirm edit",
+  "cancel": "Cancel Edit",
+  "confirm": "Confirm Edit",
   "action": "Action",
   "changePassword": "Change Password",
-  "editUser": "Edit User"
+  "editUser": "Edit User",
+  "uploadImg": "Upload Image",
+  "name": "Name",
+  "nameLimit": "Maximum length is 12",
+  "nameError": "Name cannot be empty, maximum length is is 12.",
+  "facebookUId": "Facebook User Id",
+  "facebookUIdError": "Facebook User Id maximum length is is 16",
+  "twitterUId": "Twitter User Id",
+  "twitterUIdError": "Twitter User Id maximum length is is 16",
+  "uIdLimit": "Maximum length is 16",
+  "editUserSuccess": "Successful edit user",
+  "changeBannerSuccess": "Succeful change banner"
 }

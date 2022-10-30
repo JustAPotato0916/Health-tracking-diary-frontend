@@ -16,6 +16,7 @@ import UserDataService from "../service/UserDataService";
 
 interface IAuth {
   user: User | null;
+  isLoading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
@@ -25,6 +26,7 @@ interface IAuth {
 
 const AuthContext = createContext<IAuth>({
   user: null,
+  isLoading: false,
   signUp: async () => {},
   signIn: async () => {},
   loginWithGoogle: async () => {},
@@ -149,6 +151,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       signIn,
       loginWithGoogle,
       logout,
+      isLoading,
       errorMessage,
     }),
     [user]

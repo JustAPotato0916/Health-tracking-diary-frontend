@@ -1,3 +1,4 @@
+import { UserData } from "./../../typing.d";
 import { getCookie } from "cookies-next";
 
 interface CreateProps {
@@ -6,8 +7,15 @@ interface CreateProps {
   email: string;
 }
 
+interface UpdateProps {
+  profilePhotoUrl?: string;
+  name: string;
+  facebookUID: string;
+  twitterUID: string;
+}
+
 class UserDataService {
-  async getUserData() {
+  async getUserData(): Promise<UserData> {
     const authToken = getCookie("authToken");
 
     return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData`, {
@@ -38,10 +46,33 @@ class UserDataService {
     });
   }
 
-  async updateCover(profileCoverUrl: string) {
+  async updateUserData({
+    profilePhotoUrl,
+    name,
+    facebookUID,
+    twitterUID,
+  }: UpdateProps) {
     const authToken = getCookie("authToken");
 
     return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        profilePhotoUrl,
+        name,
+        facebookUID,
+        twitterUID,
+      }),
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async updateCover(profileCoverUrl: string) {
+    const authToken = getCookie("authToken");
+
+    return await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/userData/banner`, {
       method: "PATCH",
       body: JSON.stringify({
         profileCoverUrl,

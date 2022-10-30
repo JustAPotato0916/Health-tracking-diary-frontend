@@ -1,8 +1,20 @@
 {
   "imageError": "無法讀取圖片，請試著重新整理頁面!",
   "uploadCover": "上傳圖片",
+  "cancel": "取消修改",
   "confirm": "確認修改",
   "action": "Action 動作",
   "changePassword": "修改密碼",
-  "editUser": "編輯用戶資料"
+  "editUser": "編輯用戶資料",
+  "uploadImg": "上傳頭像",
+  "name": "Name 姓名",
+  "nameLimit": "上限為 12 個字",
+  "nameError": "姓名不可為空，長度上限為 12 個字",
+  "facebookUId": "Facebook User Id",
+  "facebookUIdError": "Facebook User Id 長度上限為 16 個字",
+  "twitterUId": "Twitter User Id",
+  "twitterUIdError": "Twitter User Id 長度上限為 16 個字",
+  "uIdLimit": "上限為 16 個字",
+  "editUserSuccess": "成功編輯用戶資料",
+  "changeBannerSuccess": "成功更換橫幅"
 }

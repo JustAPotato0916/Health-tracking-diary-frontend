@@ -11,11 +11,12 @@ import Sidebar from "../../components/general/Sidebar";
 import { storage } from "../../src/config/firebase.config";
 import useAuth from "../../src/hooks/useAuth";
 import UserDataService from "../../src/service/UserDataService";
-import userDataService from "../../src/service/UserDataService";
 import { v4 } from "uuid";
 import { InferGetStaticPropsType, GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import toast from "react-hot-toast";
+import toastStyle from "../../src/lib/toastStyle";
 
 interface Props {}
 
@@ -29,11 +30,11 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
 
   const { isError, isSuccess, isLoading, data, error } = useQuery(
     ["userData"],
-    userDataService.getUserData,
+    UserDataService.getUserData,
     { staleTime: 3000 }
   );
 
-  const { mutate } = useMutation(updateCover, {
+  const { isLoading: updateCoverIsLoading, mutate } = useMutation(updateCover, {
     onSuccess: () => {
       queryClient.invalidateQueries(["userData"]);
     },
@@ -44,9 +45,9 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
       <div className="flex flex-col w-screen h-screen lg:grid lg:grid-cols-12 lg:grid-flow-col dark:bg-[#202124]">
         <Sidebar />
 
-        <div className="flex justify-center items-center col-span-10">
+        <div className="flex justify-center items-center w-full h-full lg:col-span-10">
           <Head>
-            <title>Health tracking diary</title>
+            <title>Health tracking diary - User</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Loader />
@@ -60,9 +61,9 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
       <div className="flex flex-col w-screen h-screen lg:grid lg:grid-cols-12 lg:grid-flow-col dark:bg-[#202124]">
         <Sidebar />
 
-        <div className="flex justify-center items-center col-span-10">
+        <div className="flex justify-center items-center w-full h-full lg:col-span-10">
           <Head>
-            <title>Health tracking diary</title>
+            <title>Health tracking diary- User</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <ErrorCard />
@@ -87,8 +88,14 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
 
     if (!imageURL) return;
 
-    await UserDataService.updateCover(imageURL);
-    setNewCoverURL("");
+    await UserDataService.updateCover(imageURL).then(() => {
+      setNewCoverURL("");
+      toast(t("changeBannerSuccess"), {
+        duration: 8000,
+        style: toastStyle,
+      });
+      window.location.reload();
+    });
   }
 
   return (
@@ -99,7 +106,6 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
       </Head>
 
       <Sidebar />
-
       <div className="flex flex-col justify-between col-span-10 m-8 select-none dark:text-white">
         <div>
           <div className="flex flex-col justify-end items-end relative h-36 md:h-48 lg:h-64">
@@ -111,8 +117,8 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
               alt={t("imageError")}
             />
             <div className="hidden absolute mr-16 mb-8 lg:flex flex-row">
-              <button className="absolute w-36 text-white font-semibold bg-green-500 hover:bg-green-600 p-2 pointer-events-none z-10 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                {isUploadLoading ? <ButtonLoader /> : "上傳新圖片"}
+              <button className="absolute w-36 text-white font-semibold bg-purple-400 border-2 p-2 pointer-events-none z-10">
+                {isUploadLoading ? <ButtonLoader /> : t("uploadCover")}
               </button>
               <input
                 type="file"
@@ -141,12 +147,12 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
               />
               {newCoverURL && (
                 <button
-                  className="text-white font-semibold bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 p-2 ml-20 w-36"
+                  className="text-white font-semibold bg-blue-500 border-2 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 p-2 ml-20 w-36"
                   onClick={() => {
                     mutate();
                   }}
                 >
-                  確認修改
+                  {updateCoverIsLoading ? <ButtonLoader /> : t("confirm")}
                 </button>
               )}
             </div>
@@ -221,7 +227,7 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
         </div>
         <div>
           <div className="mt-4 font-extrabold text-3xl">{t("action")}</div>
-          <div className="flex flex-row mt-2">
+          <div className="flex flex-row mt-2 space-x-5">
             {user?.providerData[0].providerId !== "google.com" && (
               <Link href={"/user/editPassword"}>
                 <button
