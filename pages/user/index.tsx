@@ -12,13 +12,20 @@ import { storage } from "../../src/config/firebase.config";
 import useAuth from "../../src/hooks/useAuth";
 import UserDataService from "../../src/service/UserDataService";
 import userDataService from "../../src/service/UserDataService";
+import { v4 } from "uuid";
+import { InferGetStaticPropsType, GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
-function index() {
+interface Props {}
+
+function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [newCoverURL, setNewCoverURL] = useState<string>();
   const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false);
   const [imageUpload, setImageUpload] = useState<File | null>();
+  const { t } = useTranslation("user");
 
   const { isError, isSuccess, isLoading, data, error } = useQuery(
     ["userData"],
@@ -84,8 +91,6 @@ function index() {
     setNewCoverURL("");
   }
 
-  console.log({ isError, isSuccess, isLoading, data, error });
-
   return (
     <div className="flex flex-col w-screen h-screen lg:grid lg:grid-cols-12 lg:grid-flow-col dark:bg-[#202124]">
       <Head>
@@ -98,27 +103,15 @@ function index() {
       <div className="flex flex-col justify-between col-span-10 m-8 select-none dark:text-white">
         <div>
           <div className="flex flex-col justify-end items-end relative h-36 md:h-48 lg:h-64">
-            {newCoverURL ? (
-              <Image
-                src={newCoverURL}
-                className="relative rounded object-cover select-none"
-                fill
-                sizes="100%"
-                alt="圖片無法讀取成功，請試著重新整理頁面!"
-              />
-            ) : (
-              <Image
-                src={data.profileCoverUrl}
-                className="relative rounded object-cover select-none"
-                fill
-                priority
-                sizes="100%"
-                alt="圖片無法讀取成功，請試著重新整理頁面!"
-              />
-            )}
-
-            <div className="hidden absolute mr-24 mb-8 lg:flex flex-row">
-              <button className="absolute w-36 bg-green-500 hover:bg-green-600 p-2 pointer-events-none z-10 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium">
+            <Image
+              src={newCoverURL ?? data.profileCoverUrl}
+              className="relative rounded object-cover select-none"
+              fill
+              sizes="100%"
+              alt={t("imageError")}
+            />
+            <div className="hidden absolute mr-16 mb-8 lg:flex flex-row">
+              <button className="absolute w-36 text-white font-semibold bg-green-500 hover:bg-green-600 p-2 pointer-events-none z-10 focus:ring-4 focus:outline-none focus:ring-blue-300">
                 {isUploadLoading ? <ButtonLoader /> : "上傳新圖片"}
               </button>
               <input
@@ -148,7 +141,7 @@ function index() {
               />
               {newCoverURL && (
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium p-2 ml-24 w-36"
+                  className="text-white font-semibold bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 p-2 ml-20 w-36"
                   onClick={() => {
                     mutate();
                   }}
@@ -165,7 +158,7 @@ function index() {
                 fill
                 sizes="100%"
                 priority
-                alt="圖片無法讀取成功，請試著重新整理頁面!"
+                alt={t("imageError")}
               />
             </div>
             <div className="flex flex-col text-base font-semibold m-2 lg:font-extrabold lg:text-2xl lg:m-4">
@@ -227,22 +220,22 @@ function index() {
           </div>
         </div>
         <div>
-          <div className="mt-4 font-extrabold text-3xl">Action 動作</div>
+          <div className="mt-4 font-extrabold text-3xl">{t("action")}</div>
           <div className="flex flex-row mt-2">
             {user?.providerData[0].providerId !== "google.com" && (
               <Link href={"/user/editPassword"}>
                 <button
                   type="button"
-                  className="text-white w-32 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-green-600 hover:bg-green-700 outline-none focus:ring-green-800"
+                  className="flex justify-center text-white w-48 focus:ring-4 text-lg font-semibold rounded-lg p-5 py-2.5 bg-green-600 hover:bg-green-700 outline-none focus:ring-green-800"
                 >
-                  修改密碼
+                  {t("changePassword")}
                 </button>
               </Link>
             )}
 
             <Link href={"/user/edit"}>
-              <div className="text-white w-32 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-blue-600 hover:bg-blue-700 outline-none focus:ring-blue-800">
-                編輯用戶資料
+              <div className="flex justify-center text-white w-48 focus:ring-4 text-lg font-semibold rounded-lg p-5 py-2.5 bg-blue-600 hover:bg-blue-700 outline-none focus:ring-blue-800">
+                {t("editUser")}
               </div>
             </Link>
           </div>
@@ -252,7 +245,10 @@ function index() {
   );
 }
 
+export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "zh-TW", ["user"])),
+  },
+});
+
 export default index;
-function v4() {
-  throw new Error("Function not implemented.");
-}
