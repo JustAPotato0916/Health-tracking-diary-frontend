@@ -17,6 +17,21 @@ export interface Target {
   time: string;
 }
 
+export interface DiaryData {
+  diaryFolders: DiaryFolder[];
+}
+
+export interface DiaryFolder {
+  name: string;
+  diaries: Diary[];
+}
+
+export interface Diary {
+  title: string;
+  content: string;
+  date: string;
+}
+
 // Weather
 export interface WeatherResponse {
   success: string;

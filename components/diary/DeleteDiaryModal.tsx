@@ -6,43 +6,42 @@ import { BiXCircle } from "react-icons/bi";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../src/atoms/modalAtom";
 import toastStyle from "../../src/lib/toastStyle";
-import TargetService from "../../src/service/TargetService";
-import { Target } from "../../typing";
+import DiaryService from "../../src/service/DiaryService";
+import { Diary, DiaryFolder } from "../../typing";
 import ButtonLoader from "../general/ButtonLoader";
 
 interface Props extends i18nContext {
-  target: Target;
-  setTarget: Dispatch<SetStateAction<Target | null>>;
+  folder: DiaryFolder;
+  diary: Diary;
+  setDiary: Dispatch<SetStateAction<Diary | null>>;
 }
 
 interface i18nContext {
-  deleteTarget: string;
-  deleteWarning: string;
+  deleteDiary: string;
+  deletDiaryWarning: string;
+  deleteDiarySuccess: string;
   cancelDelete: string;
   confirmDelete: string;
-  deleteSuccess: string;
 }
 
-function DeleTargetModal({
-  target,
-  setTarget,
-  deleteTarget,
-  deleteWarning,
+function DeleteDiaryModal({
+  folder,
+  diary,
+  setDiary,
+  deleteDiary,
+  deletDiaryWarning,
+  deleteDiarySuccess,
   cancelDelete,
   confirmDelete,
-  deleteSuccess,
 }: Props) {
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useRecoilState(modalState);
 
-  const { isLoading, isError, error, mutate } = useMutation(
-    TargetService.remove,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["targets"]);
-      },
-    }
-  );
+  const { isLoading, mutate } = useMutation(DiaryService.remove, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["diaryData"]);
+    },
+  });
 
   const handleClose = () => {
     setShowModal(false);
@@ -57,13 +56,13 @@ function DeleTargetModal({
       <div className="flex flex-col border-2 p-5 rounded-xl bg-[#303134]">
         <div className="flex flex-row justify-between mb-2">
           <span className="text-3xl text-white">
-            {deleteTarget} {target!.title}
+            {deleteDiary} {diary!.title}
           </span>
           <BiXCircle className="w-8 h-8 text-white" onClick={handleClose} />
         </div>
         <div className="flex flex-col space-y-5">
           <span className="text-xl text-red-500 font-semibold">
-            {deleteWarning}
+            {deletDiaryWarning}
           </span>
           <div className="flex flex-row justify-center space-x-5 text-lg">
             <button
@@ -77,13 +76,14 @@ function DeleTargetModal({
               className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-1/2 lg:w-1/4 px-5 py-2.5 text-center"
               disabled={isLoading && true}
               onClick={() => {
-                mutate(target!.id);
-                setShowModal(false);
-                setTarget(null);
-                toast(`${deleteSuccess} - ${target?.title}!`, {
+                mutate({ folderName: folder.name, diaryName: diary.title });
+                toast(`${deleteDiarySuccess} - ${diary?.title!}`, {
                   duration: 8000,
                   style: toastStyle,
                 });
+
+                setDiary(null);
+                setShowModal(false);
               }}
             >
               {!isLoading ? confirmDelete : <ButtonLoader />}
@@ -95,4 +95,4 @@ function DeleTargetModal({
   );
 }
 
-export default DeleTargetModal;
+export default DeleteDiaryModal;

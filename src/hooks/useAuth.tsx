@@ -62,6 +62,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
   }, [auth]);
 
+  useEffect(() => {
+    onIdTokenChanged(auth, async (user) => {
+      if (user) setCookie("authToken", await user.getIdToken(true));
+    });
+  }, []);
+
   const signUp = async (email: string, password: string) => {
     setIsLoading(true);
 
