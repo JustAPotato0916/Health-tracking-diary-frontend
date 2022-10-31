@@ -79,7 +79,7 @@ function EditTargetModal({
     mutate(newTarget);
     setTarget(newTarget);
 
-    toast(`${editSuccess} - ${title}!`, {
+    toast(`${editSuccess} - ${title}`, {
       duration: 8000,
       style: toastStyle,
     });

@@ -35,14 +35,11 @@ function DeleTargetModal({
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useRecoilState(modalState);
 
-  const { isLoading, isError, error, mutate } = useMutation(
-    TargetService.remove,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["targets"]);
-      },
-    }
-  );
+  const { isLoading, mutate } = useMutation(TargetService.remove, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["targets"]);
+    },
+  });
 
   const handleClose = () => {
     setShowModal(false);
@@ -80,7 +77,7 @@ function DeleTargetModal({
                 mutate(target!.id);
                 setShowModal(false);
                 setTarget(null);
-                toast(`${deleteSuccess} - ${target?.title}!`, {
+                toast(`${deleteSuccess} - ${target?.title}`, {
                   duration: 8000,
                   style: toastStyle,
                 });

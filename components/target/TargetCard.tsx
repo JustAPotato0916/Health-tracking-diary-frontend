@@ -130,7 +130,7 @@ function TargetCard({
               };
               mutate(completedTarget);
               setTarget(completedTarget);
-              toast(`${completeMessage} - ${target?.title}!`, {
+              toast(`${completeMessage} - ${target?.title}`, {
                 duration: 8000,
                 style: toastStyle,
               });

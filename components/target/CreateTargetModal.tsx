@@ -72,7 +72,7 @@ function CreateTargetModal({
       time: new Date(Date.now()).toLocaleDateString(),
     });
 
-    toast(`${addSuccess} - ${title}!`, {
+    toast(`${addSuccess} - ${title}`, {
       duration: 8000,
       style: toastStyle,
     });
