@@ -23,5 +23,8 @@
   "target": "目標",
   "diary": "日記",
   "googleFit": "Google Fit",
-  "user": "會員資料"
+  "user": "會員資料",
+  "signupError": "註冊失敗，請確認此信箱尚未使用過!",
+  "loginError": "登入失敗！請確認帳號密碼是否輸入正確！",
+  "googleLoginError": "發生未知的錯誤，請選擇一個可用的帳號進行登入！"
 }

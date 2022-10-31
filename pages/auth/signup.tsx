@@ -19,7 +19,7 @@ interface Inputs {
 interface Props {}
 
 function signup(_props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { isLoading, signUp, errorMessage, loginWithGoogle } = useAuth();
+  const { isLoading, signUp, error, loginWithGoogle } = useAuth();
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const { t } = useTranslation("common");
 
@@ -115,9 +115,9 @@ function signup(_props: InferGetStaticPropsType<typeof getStaticProps>) {
               )}
             </div>
 
-            {errorMessage && (
+            {error && (
               <div className="text-red-600">
-                <div>{errorMessage}</div>
+                <div>{t("signupError")}</div>
               </div>
             )}
 

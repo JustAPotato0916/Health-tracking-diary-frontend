@@ -86,8 +86,6 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
     { ssr: false }
   );
 
-  console.log(data);
-
   return (
     <div className="flex flex-col w-screen h-screen lg:grid lg:grid-cols-12 lg:grid-flow-col dark:bg-[#202124]">
       <Head>

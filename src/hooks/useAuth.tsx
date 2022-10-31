@@ -2,12 +2,15 @@ import { setCookie } from "cookies-next";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  linkWithPopup,
   onAuthStateChanged,
   onIdTokenChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  unlink,
   User,
+  UserCredential,
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -20,8 +23,10 @@ interface IAuth {
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  linkGoogle: () => Promise<void>;
+  unlinkGoogle: () => Promise<void>;
   logout: () => Promise<void>;
-  errorMessage: string | null;
+  error: boolean;
 }
 
 const AuthContext = createContext<IAuth>({
@@ -30,8 +35,10 @@ const AuthContext = createContext<IAuth>({
   signUp: async () => {},
   signIn: async () => {},
   loginWithGoogle: async () => {},
+  linkGoogle: async () => {},
+  unlinkGoogle: async () => {},
   logout: async () => {},
-  errorMessage: null,
+  error: false,
 });
 
 interface AuthProviderProps {
@@ -43,8 +50,16 @@ const noAuthRequired = ["/auth/login", "/auth/signup"];
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const router = useRouter();
+  const googleProvider = new GoogleAuthProvider();
+  googleProvider.addScope(
+    "https://www.googleapis.com/auth/fitness.activity.read"
+  );
+  googleProvider.addScope(
+    "https://www.googleapis.com/auth/fitness.location.read"
+  );
+  googleProvider.addScope("https://www.googleapis.com/auth/fitness.body.read");
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -55,6 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else {
         setUser(null);
         setCookie("authToken", null);
+        setCookie("googleAccessToken", null);
         setIsLoading(true);
         if (!noAuthRequired.includes(router.pathname))
           router.push("/auth/login");
@@ -72,14 +88,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
+      .then(async (userCredential: UserCredential) => {
         setUser(userCredential.user);
         setCookie("authToken", await userCredential.user.getIdToken(true));
         router.push("/");
         setIsLoading(false);
       })
       .catch((error) => {
-        setErrorMessage("註冊失敗，請確認此信箱尚未使用過!");
+        setError(true);
       })
       .finally(() => {
         setIsLoading(false);
@@ -90,9 +106,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     await signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
+      .then(async (userCredential: UserCredential) => {
         setUser(userCredential.user);
         setCookie("authToken", await userCredential.user.getIdToken(true));
+
+        if (
+          userCredential.user.providerData.find((providerData) => {
+            return providerData.providerId == "google.com";
+          })
+        ) {
+          const credential =
+            GoogleAuthProvider.credentialFromResult(userCredential);
+          setCookie("googleAccessToken", credential?.accessToken);
+        }
+
         await UserDataService.create({
           uid: userCredential.user.uid,
           name: `用戶 ${Math.floor(Math.random() * (9999 - 1000) + 1000)}`,
@@ -102,7 +129,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        setErrorMessage("登入失敗！請確認帳號密碼是否輸入正確！");
+        setError(true);
       })
       .finally(() => {
         setIsLoading(false);
@@ -111,15 +138,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
-    const provider = new GoogleAuthProvider();
-    provider.addScope("https://www.googleapis.com/auth/fitness.activity.read");
-    provider.addScope("https://www.googleapis.com/auth/fitness.location.read");
-    provider.addScope("https://www.googleapis.com/auth/fitness.body.read");
 
-    await signInWithPopup(auth, provider)
-      .then(async (userCredential) => {
+    await signInWithPopup(auth, googleProvider)
+      .then(async (userCredential: UserCredential) => {
         setUser(userCredential.user);
         setCookie("authToken", await userCredential.user.getIdToken(true));
+
+        const credential =
+          GoogleAuthProvider.credentialFromResult(userCredential);
+        setCookie("googleAccessToken", credential?.accessToken);
+
         await UserDataService.create({
           uid: userCredential.user.uid,
           name: userCredential.user.displayName!,
@@ -129,7 +157,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        setErrorMessage("發生未知的錯誤，請選擇一個可用的帳號進行登入！");
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const linkGoogle = async () => {
+    setIsLoading(true);
+
+    return await linkWithPopup(user!, googleProvider)
+      .then(async (userCredential: UserCredential) => {
+        const credential =
+          GoogleAuthProvider.credentialFromResult(userCredential);
+        setUser(userCredential.user);
+        setCookie("authToken", await userCredential.user.getIdToken(true));
+        setCookie("googleAccessToken", credential?.accessToken);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const unlinkGoogle = async () => {
+    setIsLoading(true);
+
+    return await unlink(user!, "google.com")
+      .then((user: User) => {
+        setUser(user);
+        setCookie("googleAccessToken", null);
+      })
+      .catch((error) => {
+        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -143,9 +206,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(() => {
         setUser(null);
         setCookie("authToken", null);
+        setCookie("googleAccessToken", null);
       })
       .finally(() => {
-        setErrorMessage(null);
+        setError(false);
         setIsLoading(false);
       });
   };
@@ -156,9 +220,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       signUp,
       signIn,
       loginWithGoogle,
+      linkGoogle,
+      unlinkGoogle,
       logout,
       isLoading,
-      errorMessage,
+      error,
     }),
     [user]
   );

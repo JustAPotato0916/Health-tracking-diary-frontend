@@ -227,17 +227,6 @@ function index(_props: InferGetStaticPropsType<typeof getStaticProps>) {
         <div>
           <div className="mt-4 font-extrabold text-3xl">{t("action")}</div>
           <div className="flex flex-row mt-2 space-x-5">
-            {user?.providerData[0].providerId !== "google.com" && (
-              <Link href={"/user/editPassword"}>
-                <button
-                  type="button"
-                  className="flex justify-center text-white w-48 focus:ring-4 text-lg font-semibold rounded-lg p-5 py-2.5 bg-green-600 hover:bg-green-700 outline-none focus:ring-green-800"
-                >
-                  {t("changePassword")}
-                </button>
-              </Link>
-            )}
-
             <Link href={"/user/edit"}>
               <div className="flex justify-center text-white w-48 focus:ring-4 text-lg font-semibold rounded-lg p-5 py-2.5 bg-blue-600 hover:bg-blue-700 outline-none focus:ring-blue-800">
                 {t("editUser")}

@@ -23,5 +23,8 @@
   "target": "Target",
   "diary": "Diary",
   "googleFit": "Google Fit",
-  "user": "User"
+  "user": "User",
+  "signupError": "Signup failed, please make sure this account unused before.",
+  "loginError": "Login failed, please enter correct account and password.",
+  "googleLoginError": "Unknown error."
 }

@@ -17,6 +17,11 @@ export interface Target {
   time: string;
 }
 
+export interface GoogleFitTarget {
+  type: "心肺強化分數" | "步數";
+  value: number;
+}
+
 export interface DiaryData {
   diaryFolders: DiaryFolder[];
 }
@@ -77,4 +82,29 @@ interface Time {
 interface ElementValue {
   value: string;
   measures: string;
+}
+
+// Google Fit
+interface GoogleFitBucket {
+  startTimeMillis: string;
+  endTimeMillis: string;
+  dataset: Array<GoogleFitDataSet>;
+}
+
+interface GoogleFitDataSet {
+  dataSourceId: string;
+  point: Array<GoogleFitPoint>;
+}
+
+interface GoogleFitPoint {
+  dataTypeName: string;
+  endTimeNanos: string;
+  startTimeNanos: string;
+  value: Array<GoogleFitValue>;
+}
+
+interface GoogleFitValue {
+  intVal?: number;
+  fpVal: number;
+  mapVal: Array<any>;
 }

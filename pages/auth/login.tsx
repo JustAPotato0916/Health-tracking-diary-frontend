@@ -17,7 +17,7 @@ interface Inputs {
 }
 
 function login(_props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { isLoading, signIn, errorMessage, loginWithGoogle } = useAuth();
+  const { isLoading, signIn, error, loginWithGoogle } = useAuth();
   const { t } = useTranslation("common");
 
   const {
@@ -89,9 +89,9 @@ function login(_props: InferGetStaticPropsType<typeof getStaticProps>) {
               )}
             </div>
 
-            {errorMessage && (
+            {error && (
               <div className="text-red-600">
-                <div>{errorMessage}</div>
+                <div>{t("loginError")}</div>
               </div>
             )}
 

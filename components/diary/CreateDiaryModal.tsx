@@ -79,7 +79,7 @@ function CreateDiaryModal({
     setShowModal(false);
   };
 
-  if (!folders)
+  if (folders.length == 0)
     return (
       <MuiModal
         open={showModal}
